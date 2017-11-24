@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.email         = 'dennis@charmington.se'
 
   spec.summary       = 'Outputs the total number of swift lines'
-  # spec.homepage      = "https://github.com/<GITHUB_USERNAME>/fastlane-plugin-number_of_swift_lines"
+  spec.homepage      = "https://github.com/BinaryDennis/fastlane-plugin-number_of_swift_lines"
   spec.license       = "MIT"
 
   spec.files         = Dir["lib/**/*"] + %w(README.md LICENSE)
@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
 
   # spec.add_dependency 'your-dependency', '~> 1.0.0'
   spec.add_dependency 'artii', '~> 2.1'
-  
+
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'rspec'
