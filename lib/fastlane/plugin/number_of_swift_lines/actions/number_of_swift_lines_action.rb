@@ -3,17 +3,20 @@ module Fastlane
     class NumberOfSwiftLinesAction < Action
       def self.run(params)
         require 'artii'
-        if not File.exists?('/usr/local/bin/cloc')
-          UI.error("\nWarning! cloc is not installed in /usr/local/bin/cloc\nrun: brew install cloc")
+
+        current_dir = Dir.pwd
+        swift_files = Action.sh("find #{current_dir} -name \"*.swift\" | egrep -v \"(/Tests|/Pods|/Frameworks|/Carthage)\" || true")
+        if swift_files.empty?
+          UI.error("No swift files found :(")
           exit 1
         end
 
-        result = Action.sh("/usr/local/bin/cloc . --include-lang=\"Swift\" --not-match-d='.*Tests' --ignore-whitespace  --quiet | grep \"Swift\" | awk '{print $5\"-\"$2}'")
-        array = result.split("-")
+        number_of_files = Action.sh("echo '#{swift_files}' | wc -l | awk '{print $1}'")
+        number_of_lines = Action.sh("echo '#{swift_files}' | xargs wc -l | tail -1 | awk '{print $1}' ")
+        largest_files = Action.sh("echo '#{swift_files}' | xargs wc -l | sort -n | tail -20 | head -19")
+
         a = Artii::Base.new :font => 'univers'
-        UI.message("\n" + a.asciify(array[0] + " loc"))
-        UI.message("\n" + a.asciify(array[1] + " swift files"))
-        return result
+        UI.message("\n\nTotal number of swift files: " + number_of_files + "\n\n" + "The 20 largest files in ascending order:\n\n"+largest_files+"\n" + a.asciify(number_of_lines + " swift lines"))
       end
 
       def self.description
