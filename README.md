@@ -12,7 +12,7 @@ fastlane add_plugin number_of_swift_lines
 
 ## About number_of_swift_lines
 
-Outputs the total number of swift lines
+Outputs the total number of lines of swift code, number of swift files, and a list of the most largest swift files.
 
 **Note to author:** Add a more detailed description about this plugin here. If your plugin contains multiple actions, make sure to mention them here.
 
