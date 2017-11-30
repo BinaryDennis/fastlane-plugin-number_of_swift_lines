@@ -14,8 +14,7 @@ module Fastlane
         show_ascii = params[:enable_ascii_art]
         exclude_regex = params[:files_exclude_regex]
 
-        current_dir = Dir.pwd #//TODO:change to project root dir, relative path!
-        find_command = "find #{current_dir} -name \"*.swift\" | egrep -v \"#{exclude_regex}\""
+        find_command = "find . -name \"*.swift\" | egrep -v \"#{exclude_regex}\""
         #find_command = "find . -name '*.swift' -not -path '*/Tests/*' -not -path '*/Pods/*' -not -path '*/Carthage/*' -print0"
         UI.message(find_command)
 
