@@ -14,17 +14,21 @@ module Fastlane
         show_ascii = params[:enable_ascii_art]
         exclude_regex = params[:files_exclude_regex]
 
-        current_dir = Dir.pwd
-        swift_files = `find #{current_dir} -name \"*.swift\" | egrep -v \"#{exclude_regex}\"`
+        current_dir = Dir.pwd #//TODO:change to project root dir, relative path!
+        find_command = "find #{current_dir} -name \"*.swift\" | egrep -v \"#{exclude_regex}\""
+        #find_command = "find . -name '*.swift' -not -path '*/Tests/*' -not -path '*/Pods/*' -not -path '*/Carthage/*' -print0"
+        UI.message(find_command)
+
+        swift_files = `#{find_command}`
         if swift_files.empty?
           UI.error("No swift files found :(")
           exit 1
         end
 
-        number_of_files = `echo '#{swift_files}' | wc -l | awk '{print $1}'`
-        number_of_lines = `echo '#{swift_files}' | xargs wc -l | tail -1 | awk '{print $1}'`
-        largest_files = `echo '#{swift_files}' | xargs wc -l | sort -n | tail -'#{number_of_largest_files.to_s}' | head -'#{(number_of_largest_files-1).to_s}'`
-        number_of_lines_largest_file = `echo '#{swift_files}' | xargs wc -l | sort -n | tail -2 | head -1 | awk '{print $1}'`
+        number_of_files              = `echo '#{swift_files}' | wc -l | awk '{print $1}'`
+        number_of_lines              = `echo '#{swift_files}' | tr '\\n' '\\0' | xargs -0 wc -l | tail -1 | awk '{print $1}'`
+        largest_files                = `echo '#{swift_files}' | tr '\\n' '\\0' | xargs -0 wc -l | sort -n | tail -'#{number_of_largest_files.to_s}' | head -'#{(number_of_largest_files-1).to_s}'`
+        number_of_lines_largest_file = `echo '#{swift_files}' | tr '\\n' '\\0' | xargs -0 wc -l | sort -n | tail -2 | head -1 | awk '{print $1}'`
 
         ascii_message = ""
         if  show_ascii == true then
@@ -88,7 +92,7 @@ module Fastlane
               env_name: "FILES_EXCLUDE_REGEX",
               description: "Regex string used with grep to exclude files from the list of all swift files",
               optional: true,
-              default_value: "(/Tests|/Pods|/Frameworks|/Carthage)",
+              default_value: "(/Tests|/Pods|/Carthage)",
               type: String)
           ]
       end
