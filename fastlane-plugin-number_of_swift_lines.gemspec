@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.author        = 'Dennis Charmington'
   spec.email         = 'dennis@charmington.se'
 
-  spec.summary       = 'Outputs the total number of swift lines'
+  spec.summary       = 'Outputs the total number of swift lines and other useful statistics'
   spec.homepage      = "https://github.com/BinaryDennis/fastlane-plugin-number_of_swift_lines"
   spec.license       = "MIT"
 
